@@ -6,10 +6,17 @@
   <h2>Produtos</h2>
   {% if caixa.produtos %}
     <table class="prod-table">
-      <thead><tr><th>Material</th><th>Nome</th><th>Defeito</th><th>Depósito</th><th>Total</th><th>Data</th><th>Ações</th></tr></thead>
+      <thead><tr><th>Imagem</th><th>Material</th><th>Nome</th><th>Defeito</th><th>Depósito</th><th>Total</th><th>Data</th><th>Ações</th></tr></thead>
       <tbody>
         {% for p in caixa.produtos %}
           <tr>
+            <td>
+              {% if p.imagem and p.imagem != 'sem imagem' %}
+                <img src="{{ p.imagem }}" alt="Produto" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+              {% else %}
+                <span style="color: #ccc; font-size: 12px;">-</span>
+              {% endif %}
+            </td>
             <td>{{ p.material }}</td>
             <td>{{ p.nome }}</td>
             <td>{{ p.defeito }}</td>
@@ -32,10 +39,27 @@
   {% endif %}
 
   <h3>Adicionar Produto</h3>
-  <form method="post">
+  
+  <!-- Preview da imagem -->
+  <div id="imagemPreview" style="display: none; margin-bottom: 15px;">
+    <img id="imagemProduto" src="" alt="Produto" style="max-width: 150px; max-height: 150px; border: 2px solid #ddd; border-radius: 8px; padding: 5px;">
+    <p id="nomeProduto" style="margin-top: 8px; font-size: 14px; color: #666;"></p>
+  </div>
+
+  <form method="post" id="formProduto">
     <input type="hidden" name="action" value="add_product">
-    <label>Material (código interno): <input type="text" name="material"></label><br>
-    <label>Nome: <input type="text" name="nome"></label><br>
+    <input type="hidden" name="ean" id="eanHidden">
+    <input type="hidden" name="imagem" id="imagemHidden">
+    
+    <label>
+      <strong>EAN (Código de Barras):</strong> 
+      <input type="text" id="eanInput" placeholder="Bipe ou digite o EAN aqui" style="padding: 8px; width: 300px; font-size: 16px;">
+      <span id="statusBusca" style="margin-left: 10px; font-weight: bold;"></span>
+    </label>
+    <br><br>
+
+    <label>Material (código interno): <input type="text" name="material" id="materialInput" readonly style="background: #f0f0f0;"></label><br>
+    <label>Nome: <input type="text" name="nome" id="nomeInput"></label><br>
     <label>Defeito:
       <select name="defeito">
         {% for d in defects %}
@@ -67,4 +91,85 @@
   </form>
 
   <p><a href="/logout">Sair</a></p>
+
+  <script>
+    const eanInput = document.getElementById('eanInput');
+    const materialInput = document.getElementById('materialInput');
+    const nomeInput = document.getElementById('nomeInput');
+    const statusBusca = document.getElementById('statusBusca');
+    const imagemPreview = document.getElementById('imagemPreview');
+    const imagemProduto = document.getElementById('imagemProduto');
+    const nomeProduto = document.getElementById('nomeProduto');
+    
+    let timeoutId;
+
+    eanInput.addEventListener('input', function() {
+      clearTimeout(timeoutId);
+      const ean = this.value.trim();
+      
+      if (ean.length < 8) {
+        statusBusca.textContent = '';
+        imagemPreview.style.display = 'none';
+        return;
+      }
+
+      // Aguarda 500ms após parar de digitar para fazer a busca
+      timeoutId = setTimeout(() => {
+        buscarPorEan(ean);
+      }, 500);
+    });
+
+    function buscarPorEan(ean) {
+      statusBusca.textContent = '🔍 Buscando...';
+      statusBusca.style.color = '#3b82f6';
+      
+      const formData = new FormData();
+      formData.append('ean', ean);
+      
+      fetch('/buscar_por_ean', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          statusBusca.textContent = '✅ Encontrado!';
+          statusBusca.style.color = '#22c55e';
+          
+          // Preenche os campos
+          materialInput.value = data.codigo_interno;
+          nomeInput.value = data.nome;
+          
+          // Salva EAN e imagem nos campos hidden
+          document.getElementById('eanHidden').value = data.ean;
+          document.getElementById('imagemHidden').value = data.imagem;
+          
+          // Mostra a imagem
+          if (data.imagem && data.imagem !== 'sem imagem') {
+            imagemProduto.src = data.imagem;
+            nomeProduto.textContent = data.nome;
+            imagemPreview.style.display = 'block';
+          }
+          
+          // Foca no próximo campo
+          document.querySelector('select[name="defeito"]').focus();
+        } else {
+          statusBusca.textContent = '❌ ' + data.message;
+          statusBusca.style.color = '#ef4444';
+          materialInput.value = '';
+          imagemPreview.style.display = 'none';
+        }
+      })
+      .catch(err => {
+        statusBusca.textContent = '❌ Erro na busca';
+        statusBusca.style.color = '#ef4444';
+        console.error(err);
+      });
+    }
+
+    // Limpa os campos quando o formulário é enviado com sucesso
+    document.getElementById('formProduto').addEventListener('submit', function(e) {
+      // Após o submit, a página recarrega, então os campos serão limpos automaticamente
+    });
+  </script>
 {% endblock %}

@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, flash, session, url_for
+from flask import Flask, render_template, request, redirect, flash, session, url_for, jsonify
 import copy
 import json
+import requests
 from functools import wraps
 
 app = Flask(__name__)
@@ -53,6 +54,126 @@ defects = [
 
 # simples senha (igual à que você pediu)
 PASSWORD = "Loja1035@"
+
+# ---------------------------------------------------------------------------------
+# FUNÇÃO DE SCRAPER
+# ---------------------------------------------------------------------------------
+
+def buscar_produto(busca):
+    url = "https://www.rihappy.com.br/_v/segment/graphql/v1"
+    payload = {
+        "operationName": "productSearchV3",
+        "variables": {
+            "query": busca,
+            "map": "vendido-por,ft",
+            "fullText": busca,
+            "from": 0,
+            "to": 20,
+            "orderBy": "OrderByScoreDESC",
+            "facetsBehavior": "default",
+            "hiddenUnavailableItems": False,
+            "selectedFacets": [
+                {"key": "vendido-por", "value": "rihappy"}
+            ]
+        },
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "efcfea65b452e9aa01e820e140a5b4a331adfce70470d2290c08bc4912b45212",
+                "sender": "vtex.store-resources@0.x",
+                "provider": "vtex.search-graphql@0.x"
+            }
+        }
+    }
+    try:
+        res = requests.post(url, json=payload, timeout=10)
+        data = res.json()
+        products = data.get("data", {}).get("productSearch", {}).get("products", [])
+        resultados = []
+        for produto in products:
+            nome = produto.get("productName", "sem nome")
+            codigo_interno = produto.get("productReference", "sem código interno")
+            items = produto.get("items", [])
+            imagens = items[0].get("images", []) if items else []
+            imagem_produto = imagens[0].get("imageUrl", "sem imagem") if imagens else "sem imagem"
+            ean = items[0].get("ean", "sem EAN") if items else "sem EAN"
+              
+            complement_name = None
+            if items:
+                complement_name = items[0].get("complementName") or \
+                                  items[0].get("nameComplete") or \
+                                  produto.get("complementName")
+            resultados.append({
+                "nome": nome,
+                "codigo_interno": codigo_interno,
+                "complement_name": complement_name or "sem complementName",
+                "imagem": imagem_produto,
+                "ean": ean
+            })
+        return resultados
+    except Exception as e:
+        print(f"Erro no scraper: {e}")
+        return []
+
+# ---------------------------------------------------------------------------------
+# FUNÇÃO DE SCRAPER
+# ---------------------------------------------------------------------------------
+
+def buscar_produto(busca):
+    url = "https://www.rihappy.com.br/_v/segment/graphql/v1"
+    payload = {
+        "operationName": "productSearchV3",
+        "variables": {
+            "query": busca,
+            "map": "vendido-por,ft",
+            "fullText": busca,
+            "from": 0,
+            "to": 20,
+            "orderBy": "OrderByScoreDESC",
+            "facetsBehavior": "default",
+            "hiddenUnavailableItems": False,
+            "selectedFacets": [
+                {"key": "vendido-por", "value": "rihappy"}
+            ]
+        },
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "efcfea65b452e9aa01e820e140a5b4a331adfce70470d2290c08bc4912b45212",
+                "sender": "vtex.store-resources@0.x",
+                "provider": "vtex.search-graphql@0.x"
+            }
+        }
+    }
+    try:
+        res = requests.post(url, json=payload, timeout=10)
+        data = res.json()
+        products = data.get("data", {}).get("productSearch", {}).get("products", [])
+        resultados = []
+        for produto in products:
+            nome = produto.get("productName", "sem nome")
+            codigo_interno = produto.get("productReference", "sem código interno")
+            items = produto.get("items", [])
+            imagens = items[0].get("images", []) if items else []
+            imagem_produto = imagens[0].get("imageUrl", "sem imagem") if imagens else "sem imagem"
+            ean = items[0].get("ean", "sem EAN") if items else "sem EAN"
+              
+            complement_name = None
+            if items:
+                complement_name = items[0].get("complementName") or \
+                                  items[0].get("nameComplete") or \
+                                  produto.get("complementName")
+            resultados.append({
+                "nome": nome,
+                "codigo_interno": codigo_interno,
+                "complement_name": complement_name or "sem complementName",
+                "imagem": imagem_produto,
+                "ean": ean
+            })
+        return resultados
+    except Exception as e:
+        print(f"Erro no scraper: {e}")
+        return []
 
 # ---------------------------
 # auth decorator + login route
@@ -256,6 +377,8 @@ def ver_caixa(codigo, forn, numero):
             deposito_field = request.form.get("deposito","").strip() or codigo
             total_txt = request.form.get("total","").strip()
             data_added = request.form.get("data","").strip() or ""
+            ean = request.form.get("ean","").strip()
+            imagem = request.form.get("imagem","").strip()
 
             # valida quantidade
             try:
@@ -274,7 +397,9 @@ def ver_caixa(codigo, forn, numero):
                 "deposito": deposito_field,
                 "total_pecas": total_int,
                 "data": data_added,
-                "caixa": caixa["id"]
+                "caixa": caixa["id"],
+                "ean": ean,
+                "imagem": imagem
             }
             ultimo_id += 1
             produtos.append(prod)
@@ -335,6 +460,96 @@ def ver_caixa(codigo, forn, numero):
 
     total = total_products()
     return render_template("produtos.html", deposito=dep, fornecedor=forn, caixa=caixa, defects=defects, produtos=lista_prod, total_products=total)
+
+# ---------------------------------------------------------------------------------
+# ROTA PARA BUSCAR POR EAN
+# ---------------------------------------------------------------------------------
+
+@app.route("/buscar_por_ean", methods=["POST"])
+@login_required
+def buscar_por_ean():
+    try:
+        ean_buscado = request.form.get("ean", "").strip()
+        
+        if not ean_buscado:
+            return jsonify({"success": False, "message": "EAN vazio"})
+        
+        # Busca pelo EAN
+        resultados = buscar_produto(ean_buscado)
+        
+        if not resultados:
+            return jsonify({"success": False, "message": "Nenhum produto encontrado"})
+        
+        # Procura o produto com EAN EXATO
+        produto_encontrado = None
+        for prod in resultados:
+            if prod.get("ean") == ean_buscado:
+                produto_encontrado = prod
+                break
+        
+        if not produto_encontrado:
+            return jsonify({"success": False, "message": f"EAN {ean_buscado} não encontrado nos resultados"})
+        
+        return jsonify({
+            "success": True,
+            "codigo_interno": produto_encontrado.get("codigo_interno", ""),
+            "nome": produto_encontrado.get("nome", ""),
+            "imagem": produto_encontrado.get("imagem", ""),
+            "ean": produto_encontrado.get("ean", ""),
+            "complement_name": produto_encontrado.get("complement_name", "")
+        })
+    
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Erro: {str(e)}"})
+
+# ---------------------------------------------------------------------------------
+# ROTA PARA ENRIQUECER PRODUTO
+# ---------------------------------------------------------------------------------
+
+@app.route("/enriquecer_produto", methods=["POST"])
+@login_required
+def enriquecer_produto():
+    try:
+        prod_id = int(request.form.get("prod_id"))
+        material = request.form.get("material", "").strip()
+        
+        if not material:
+            return jsonify({"success": False, "message": "Material vazio"})
+        
+        # Busca produto
+        resultados = buscar_produto(material)
+        
+        if not resultados:
+            return jsonify({"success": False, "message": "Nenhum produto encontrado"})
+        
+        # Pega o primeiro resultado
+        info = resultados[0]
+        
+        # Atualiza o produto
+        for p in produtos:
+            if p.get("id") == prod_id:
+                p["enriquecimento"] = info
+                break
+        
+        # Atualiza no deposito também
+        for dep_codigo, dep in depositos.items():
+            for caixa in dep.get("caixas", []):
+                for prod in caixa.get("produtos", []):
+                    if prod.get("id") == prod_id:
+                        prod["enriquecimento"] = info
+                        break
+        
+        # Salva no JSON
+        save_data({"depositos": list(depositos.values())})
+        
+        return jsonify({
+            "success": True,
+            "message": "Produto enriquecido!",
+            "data": info
+        })
+    
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)})
 
 # ---------------------------------------------------------------------------------
 
