@@ -124,55 +124,54 @@
           "numero": 1,
           "produtos": [
             {
+              "caixa": "06-BANDEIRANTE-1",
+              "data": "2025/11/02",
+              "defeito": "Sujo",
+              "deposito": "06",
+              "ean": "7899091403684",
               "id": 1764043844,
+              "imagem": "https://rihappynovo.vtexassets.com/arquivos/ids/6433821/Triciclo-VeloBaby---Reclinavel-Com-Capota-E-Pedal---Bandeirante---Azul-0.jpg?v=638610815316970000",
               "material": "5135866",
               "nome": "Triciclo VeloBaby - Reclinável Com Capota E Pedal - Bandeirante - Azul",
-              "defeito": "Sujo",
-              "deposito": "06",
-              "total_pecas": 1,
-              "data": "2025/11/02",
-              "caixa": "06-BANDEIRANTE-1",
-              "ean": "7899091403684",
-              "imagem": "https://rihappynovo.vtexassets.com/arquivos/ids/6433821/Triciclo-VeloBaby---Reclinavel-Com-Capota-E-Pedal---Bandeirante---Azul-0.jpg?v=638610815316970000"
+              "total_pecas": 1
             }
           ]
         },
         {
+          "fornecedor": "CARDOSO",
           "id": "06-CARDOSO-1",
           "numero": 1,
-          "fornecedor": "CARDOSO",
           "produtos": []
         },
         {
+          "fornecedor": "HAPPY BOOKS",
           "id": "06-HAPPY BOOKS-1",
           "numero": 1,
-          "fornecedor": "HAPPY BOOKS",
           "produtos": []
         },
         {
+          "fornecedor": "KIDS ZONE",
           "id": "06-KIDS ZONE-1",
           "numero": 1,
-          "fornecedor": "KIDS ZONE",
           "produtos": []
         },
         {
+          "fornecedor": "ESTRELA (JM)",
           "id": "06-ESTRELA (JM)-1",
           "numero": 1,
-          "fornecedor": "ESTRELA (JM)",
-          "produtos": [
-            {
-              "id": 1764043845,
-              "material": "5144289",
-              "nome": "Jogo de Cartas - Sherlock Express  - De 02 a 06 Jogadores - Papergames",
-              "defeito": "Sujo",
-              "deposito": "06",
-              "total_pecas": 1,
-              "data": "",
-              "caixa": "06-ESTRELA (JM)-1",
-              "ean": "7898706770753",
-              "imagem": "https://rihappynovo.vtexassets.com/arquivos/ids/8205284/Jogo-de-Cartas---Sherlock-Express----De-02-a-06-Jogadores---Papergames-0.jpg?v=638817913905070000"
-            }
-          ]
+          "produtos": []
+        },
+        {
+          "id": "06-COPAG-1",
+          "numero": 1,
+          "fornecedor": "COPAG",
+          "produtos": []
+        },
+        {
+          "id": "06-COPAG-2",
+          "numero": 2,
+          "fornecedor": "COPAG",
+          "produtos": []
         }
       ],
       "codigo": "06",
