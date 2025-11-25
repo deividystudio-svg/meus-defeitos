@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Meus Defeitos{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body {
+      padding-top: 80px; /* Espaço para os botões fixos */
+    }
+
+    /* Contador no canto direito */
+    .counter {
+      position: fixed;
+      right: 18px;
+      top: 18px;
+      background: #222;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      z-index: 50;
+    }
+
+    /* Botões de Undo/Redo no canto esquerdo */
+    .undo-redo-box {
+      position: fixed;
+      left: 18px;
+      top: 18px;
+      display: flex;
+      gap: 8px;
+      z-index: 50;
+    }
+
+    .undo-redo-box a {
+      text-decoration: none;
+      background: #333;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      transition: 0.15s ease;
+      font-size: 14px;
+    }
+
+    .undo-redo-box a:hover {
+      background: #555;
+    }
+
+    /* Container principal com margem */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Flash messages */
+    .flash-container {
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    .flash {
+      padding: 12px 20px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      font-weight: 500;
+    }
+
+    .flash.success {
+      background: #22c55e;
+      color: white;
+    }
+
+    .flash.error {
+      background: #ef4444;
+      color: white;
+    }
+
+    .flash.warning {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .flash.info {
+      background: #3b82f6;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Undo / Redo -->
+  <div class="undo-redo-box">
+    <a href="/undo">⟲ Undo</a>
+    <a href="/redo">⟳ Redo</a>
+  </div>
+
+  <!-- Contador -->
+  <div class="counter">Total: {{ total_products }}</div>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Conteúdo principal -->
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+
+</body>
+</html>

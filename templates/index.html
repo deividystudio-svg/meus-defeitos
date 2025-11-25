@@ -1,0 +1,12 @@
+{% extends "layout_base.html" %}
+{% block content %}
+  <h1>Meus Defeitos</h1>
+  <h3>Escolha o depósito</h3>
+  <div class="deps">
+    {% for d in depositos %}
+      <a class="dep-btn" href="/deposito/{{ d }}">{{ d }}</a>
+    {% endfor %}
+  </div>
+  <p class="hint">Clique no depósito para ver os fornecedores.</p>
+  <p><a href="/logout">Sair</a></p>
+{% endblock %}

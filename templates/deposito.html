@@ -1,0 +1,25 @@
+{% extends "layout_base.html" %}
+{% block title %}Depósito {{ deposito.codigo }}{% endblock %}
+
+{% block content %}
+<a href="/">← Voltar</a>
+<h1>Depósito {{ deposito.codigo }}</h1>
+
+<h3>Fornecedores</h3>
+
+{% if fornecedores %}
+<div class="fornecedores">
+    {% for f in fornecedores %}
+        <div class="forn-item">
+            <a class="dep-btn" href="/deposito/{{ deposito.codigo }}/fornecedor/{{ f.nome }}">
+                {{ f.nome }} ({{ f.caixas_count }} caixas | {{ f.total_pecas }} peças)
+            </a>
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="hint">Nenhum fornecedor ainda. Vá para um fornecedor e crie uma caixa para começar.</p>
+{% endif %}
+
+<p><a href="/logout">Sair</a></p>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "layout_base.html" %}
+{% block content %}
+  <a href="/deposito/{{ deposito.codigo }}">← Voltar</a>
+  <h1>{{ fornecedor }} — Depósito {{ deposito.codigo }}</h1>
+
+  <h2>Caixas</h2>
+  {% if caixas %}
+    <ul>
+      {% for c in caixas %}
+        <li>
+          Caixa {{ c.numero }} — <a href="/deposito/{{ deposito.codigo }}/fornecedor/{{ fornecedor }}/caixa/{{ c.numero }}">Abrir</a>
+          <form style="display:inline" method="post" action="/deposito/{{ deposito.codigo }}/fornecedor/{{ fornecedor }}/caixa/{{ c.numero }}/delete" onsubmit="return confirm('Você tem certeza que quer excluir essa caixa? Esta ação é irreversível.');">
+            <button type="submit" class="small danger">Excluir caixa</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Nenhuma caixa. Crie uma.</p>
+  {% endif %}
+
+  <form method="post" action="/deposito/{{ deposito.codigo }}/fornecedor/{{ fornecedor }}/criar_caixa">
+    <button type="submit">Criar nova caixa</button>
+  </form>
+
+  <p><a href="/logout">Sair</a></p>
+{% endblock %}

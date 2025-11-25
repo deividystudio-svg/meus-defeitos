@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: meus-defeitos
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+```
+
+3. **.gitignore**
+```
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*.log
+.DS_Store
+instance/
+.webassets-cache

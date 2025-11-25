@@ -1,0 +1,378 @@
+{
+  "depositos": [
+    {
+      "caixas": [
+        {
+          "fornecedor": "BRASGROUP",
+          "id": 1764041552.860489,
+          "numero": 1,
+          "produtos": []
+        },
+        {
+          "fornecedor": "BANDEIRANTE",
+          "id": 1764043427.567095,
+          "numero": "02",
+          "produtos": [
+            {
+              "data": "2025/08/02",
+              "defeito": "embalagem",
+              "deposito": "06",
+              "enriquecimento": {
+                "codigo_interno": "5117444",
+                "complement_name": "356",
+                "ean": "7899091403561",
+                "imagem": "https://rihappynovo.vtexassets.com/arquivos/ids/6411139/Triciclo---Velobaby-G2---Bandeirante---Passeio-e-Pedal---Masculino---Azul-0.jpg?v=638609943718730000",
+                "nome": "Triciclo - Velobaby G2 - Bandeirante - Passeio e Pedal - Masculino - Azul"
+              },
+              "id": 1764043466.740248,
+              "material": "5117444",
+              "nome": "velobaby azul",
+              "total_pecas": 1
+            },
+            {
+              "data": "2025/08/02",
+              "defeito": "sujo",
+              "deposito": "06",
+              "enriquecimento": {
+                "codigo_interno": "5117444",
+                "complement_name": "356",
+                "ean": "7899091403561",
+                "imagem": "https://rihappynovo.vtexassets.com/arquivos/ids/6411139/Triciclo---Velobaby-G2---Bandeirante---Passeio-e-Pedal---Masculino---Azul-0.jpg?v=638609943718730000",
+                "nome": "Triciclo - Velobaby G2 - Bandeirante - Passeio e Pedal - Masculino - Azul"
+              },
+              "id": 1764043492.63186,
+              "material": "5117444",
+              "nome": "velobaby rosa",
+              "total_pecas": 2
+            }
+          ]
+        },
+        {
+          "fornecedor": "ARCOM (ISAKIDS",
+          "id": "06-ARCOM (ISAKIDS-2",
+          "numero": 2,
+          "produtos": [
+            {
+              "caixa": "06-ARCOM (ISAKIDS-2",
+              "data": "",
+              "defeito": "Sujo",
+              "deposito": "06",
+              "id": 1764043843,
+              "material": "5117444",
+              "nome": "totoka",
+              "total_pecas": 2
+            }
+          ]
+        },
+        {
+          "fornecedor": "NOVABRINK (ROSITA)",
+          "id": "06-NOVABRINK (ROSITA)-3",
+          "numero": 3,
+          "produtos": []
+        },
+        {
+          "fornecedor": "NOVABRINK (ROSITA)",
+          "id": "06-NOVABRINK (ROSITA)-4",
+          "numero": 4,
+          "produtos": []
+        },
+        {
+          "fornecedor": "BEL FIX",
+          "id": "06-BEL FIX-5",
+          "numero": 5,
+          "produtos": []
+        },
+        {
+          "fornecedor": "BEL FIX",
+          "id": "06-BEL FIX-6",
+          "numero": 6,
+          "produtos": []
+        },
+        {
+          "fornecedor": "DIVERTOYS",
+          "id": "06-DIVERTOYS-7",
+          "numero": 7,
+          "produtos": []
+        },
+        {
+          "fornecedor": "ESTRELA",
+          "id": "06-ESTRELA-1",
+          "numero": 1,
+          "produtos": []
+        },
+        {
+          "fornecedor": "ESTRELA",
+          "id": "06-ESTRELA-2",
+          "numero": 2,
+          "produtos": []
+        },
+        {
+          "fornecedor": "CALIFORNIA TOYS",
+          "id": "06-CALIFORNIA TOYS-1",
+          "numero": 1,
+          "produtos": []
+        },
+        {
+          "fornecedor": "CALIFORNIA TOYS",
+          "id": "06-CALIFORNIA TOYS-2",
+          "numero": 2,
+          "produtos": []
+        },
+        {
+          "fornecedor": "BANDEIRANTE",
+          "id": "06-BANDEIRANTE-1",
+          "numero": 1,
+          "produtos": []
+        },
+        {
+          "id": "06-CARDOSO-1",
+          "numero": 1,
+          "fornecedor": "CARDOSO",
+          "produtos": []
+        },
+        {
+          "id": "06-HAPPY BOOKS-1",
+          "numero": 1,
+          "fornecedor": "HAPPY BOOKS",
+          "produtos": []
+        }
+      ],
+      "codigo": "06",
+      "fornecedores": [
+        "ARCOM (ISAKIDS",
+        "ASGARD",
+        "BBR",
+        "BANDEIRANTE",
+        "BEBE SAUDE",
+        "BEL FIX",
+        "BRASGROUP",
+        "BRIC (MAISTO)",
+        "CAA TOYS",
+        "CALIFORNIA TOYS",
+        "CAMBUCI",
+        "CANDIDE",
+        "CARDOSO",
+        "COPAG",
+        "CROMUS",
+        "COTIPLAS",
+        "DIVERTOYS",
+        "DUARTES",
+        "EBN",
+        "ELKA",
+        "EPOCH",
+        "ESS (GUM)",
+        "EDITORA MELHORAMENTOS",
+        "ESTRELA",
+        "ESTRELA (JM)",
+        "ETILUX",
+        "FIRST SP",
+        "FUN",
+        "GROW (SDI)",
+        "GRUPO FU",
+        "GULLIVER",
+        "HASBRO",
+        "HAPPY BOOKS",
+        "INFANTI (DOREL)",
+        "KIDS ZONE",
+        "LEGO",
+        "LÍDER",
+        "MACCABI",
+        "MACRO (POLIBRINK)",
+        "MAPED",
+        "MARAL",
+        "MATTEL",
+        "MAXXI HOUSE",
+        "MCA TEXTIL",
+        "METROPOLE",
+        "MIELLE",
+        "MILK",
+        "MIMO",
+        "MINHA FESTA",
+        "MOAS (BUBA)",
+        "MULTILASER",
+        "MONTE LIBANO",
+        "NEWELL (NUK)",
+        "NEW TOYS",
+        "NINTENDO",
+        "NOVABRINK (ROSITA)",
+        "OREGON",
+        "PAKIPLAST",
+        "PASCOA DISNEY",
+        "PASCOA CRM",
+        "PANINI",
+        "PHILIPS (AVENT)",
+        "PUNCH",
+        "ROMA",
+        "REGINA",
+        "SAMBA TOYS",
+        "GLOBAL",
+        "SUNNY",
+        "TK3",
+        "TOYNG",
+        "TOYSTER",
+        "UPSIDE",
+        "UNITOYS",
+        "WINNERS",
+        "XALINGO",
+        "YES TOYS"
+      ]
+    },
+    {
+      "caixas": [
+        {
+          "fornecedor": "BEL FIX",
+          "id": 1764041360.610198,
+          "numero": 1,
+          "produtos": []
+        },
+        {
+          "fornecedor": "LEGO",
+          "id": 1764041719.508333,
+          "numero": 1,
+          "produtos": []
+        },
+        {
+          "fornecedor": "PHILIPS (AVENT)",
+          "id": 1764042519.801009,
+          "numero": 1,
+          "produtos": [
+            {
+              "data": "2025-11-24",
+              "defeito": "embalagem",
+              "deposito": "14",
+              "enriquecimento": {
+                "codigo_interno": "5117444",
+                "complement_name": "356",
+                "ean": "7899091403561",
+                "imagem": "https://rihappynovo.vtexassets.com/arquivos/ids/6411139/Triciclo---Velobaby-G2---Bandeirante---Passeio-e-Pedal---Masculino---Azul-0.jpg?v=638609943718730000",
+                "nome": "Triciclo - Velobaby G2 - Bandeirante - Passeio e Pedal - Masculino - Azul"
+              },
+              "id": 1764042527.255663,
+              "material": "5117444",
+              "nome": "pilha",
+              "total_pecas": ""
+            }
+          ]
+        },
+        {
+          "fornecedor": "BEL FIX",
+          "id": 1764043811.421188,
+          "numero": "02",
+          "produtos": [
+            {
+              "data": "2025-11-24",
+              "defeito": "embalagem",
+              "deposito": "14",
+              "enriquecimento": {
+                "codigo_interno": "5143403",
+                "complement_name": "G0951B071",
+                "ean": "5010996307170",
+                "imagem": "https://rihappynovo.vtexassets.com/arquivos/ids/7532585/Jogo-de-Anatomia---Operando---A-partir-de-01-Jogador---Hasbro-0.jpg?v=638760927621300000",
+                "nome": "Jogo de Anatomia - Operando - A partir de 01 Jogador - Hasbro"
+              },
+              "id": 1764043832.158663,
+              "material": "produto 01",
+              "nome": "",
+              "total_pecas": ""
+            },
+            {
+              "data": "2025-11-24",
+              "defeito": "embalagem",
+              "deposito": "14",
+              "enriquecimento": {
+                "codigo_interno": "5143165",
+                "complement_name": "G0009B072",
+                "ean": "5010996301956",
+                "imagem": "https://rihappynovo.vtexassets.com/arquivos/ids/7465064/Jogo-de-Tabuleiro---Monopoly---De-02-a-06-Jogadores---Hasbro-0.jpg?v=638754243179670000",
+                "nome": "Jogo de Tabuleiro - Monopoly - De 02 a 06 Jogadores - Hasbro"
+              },
+              "id": 1764043842.76654,
+              "material": "produto 02",
+              "nome": "",
+              "total_pecas": ""
+            }
+          ]
+        }
+      ],
+      "codigo": "14",
+      "fornecedores": [
+        "ARCOM (ISAKIDS",
+        "ASGARD",
+        "BBR",
+        "BANDEIRANTE",
+        "BEBE SAUDE",
+        "BEL FIX",
+        "BRASGROUP",
+        "BRIC (MAISTO)",
+        "CAA TOYS",
+        "CALIFORNIA TOYS",
+        "CAMBUCI",
+        "CANDIDE",
+        "CARDOSO",
+        "COPAG",
+        "CROMUS",
+        "COTIPLAS",
+        "DIVERTOYS",
+        "DUARTES",
+        "EBN",
+        "ELKA",
+        "EPOCH",
+        "ESS (GUM)",
+        "EDITORA MELHORAMENTOS",
+        "ESTRELA",
+        "ESTRELA (JM)",
+        "ETILUX",
+        "FIRST SP",
+        "FUN",
+        "GROW (SDI)",
+        "GRUPO FU",
+        "GULLIVER",
+        "HASBRO",
+        "HAPPY BOOKS",
+        "INFANTI (DOREL)",
+        "KIDS ZONE",
+        "LEGO",
+        "LÍDER",
+        "MACCABI",
+        "MACRO (POLIBRINK)",
+        "MAPED",
+        "MARAL",
+        "MATTEL",
+        "MAXXI HOUSE",
+        "MCA TEXTIL",
+        "METROPOLE",
+        "MIELLE",
+        "MILK",
+        "MIMO",
+        "MINHA FESTA",
+        "MOAS (BUBA)",
+        "MULTILASER",
+        "MONTE LIBANO",
+        "NEWELL (NUK)",
+        "NEW TOYS",
+        "NINTENDO",
+        "NOVABRINK (ROSITA)",
+        "OREGON",
+        "PAKIPLAST",
+        "PASCOA DISNEY",
+        "PASCOA CRM",
+        "PANINI",
+        "PHILIPS (AVENT)",
+        "PUNCH",
+        "ROMA",
+        "REGINA",
+        "SAMBA TOYS",
+        "GLOBAL",
+        "SUNNY",
+        "TK3",
+        "TOYNG",
+        "TOYSTER",
+        "UPSIDE",
+        "UNITOYS",
+        "WINNERS",
+        "XALINGO",
+        "YES TOYS"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{% extends "layout_base.html" %}
+{% block content %}
+  <a href="/deposito/{{ deposito.codigo }}/fornecedor/{{ fornecedor }}">← Voltar</a>
+  <h1>{{ fornecedor }} — Caixa {{ caixa.numero }} (Depósito {{ deposito.codigo }})</h1>
+
+  <h2>Produtos</h2>
+  {% if caixa.produtos %}
+    <table class="prod-table">
+      <thead><tr><th>Material</th><th>Nome</th><th>Defeito</th><th>Depósito</th><th>Total</th><th>Data</th><th>Ações</th></tr></thead>
+      <tbody>
+        {% for p in caixa.produtos %}
+          <tr>
+            <td>{{ p.material }}</td>
+            <td>{{ p.nome }}</td>
+            <td>{{ p.defeito }}</td>
+            <td>{{ p.deposito }}</td>
+            <td>{{ p.total_pecas }}</td>
+            <td>{{ p.data }}</td>
+            <td>
+              <form method="post" style="display:inline" onsubmit="return confirm('Confirma excluir esse produto?');">
+                <input type="hidden" name="action" value="delete_product">
+                <input type="hidden" name="prod_id" value="{{ p.id }}">
+                <button type="submit" class="small danger">Excluir</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Esta caixa está vazia.</p>
+  {% endif %}
+
+  <h3>Adicionar Produto</h3>
+  <form method="post">
+    <input type="hidden" name="action" value="add_product">
+    <label>Material (código interno): <input type="text" name="material"></label><br>
+    <label>Nome: <input type="text" name="nome"></label><br>
+    <label>Defeito:
+      <select name="defeito">
+        {% for d in defects %}
+          <option value="{{ d }}">{{ d }}</option>
+        {% endfor %}
+      </select>
+    </label><br>
+    <label>Depósito:
+      <select name="deposito">
+        <option value="{{ deposito.codigo }}">{{ deposito.codigo }}</option>
+        <option value="06">06</option>
+        <option value="14">14</option>
+      </select>
+    </label><br>
+    <label>Total de peças: <input type="text" name="total"></label><br>
+    <label>Data (YYYY-MM-DD): <input type="text" name="data" value="{{ '' }}"></label><br>
+    <button type="submit">Adicionar</button>
+  </form>
+
+  <h3>Mesclar outras caixas nesta</h3>
+  <form method="post">
+    <input type="hidden" name="action" value="merge_boxes">
+    {% for c in deposito.caixas %}
+      {% if c.fornecedor == fornecedor and c.numero != caixa.numero %}
+        <label><input type="checkbox" name="merge_ids" value="{{ c.numero }}"> Caixa {{ c.numero }}</label><br>
+      {% endif %}
+    {% endfor %}
+    <button type="submit">Mesclar selecionadas</button>
+  </form>
+
+  <p><a href="/logout">Sair</a></p>
+{% endblock %}
