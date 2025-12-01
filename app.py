@@ -305,6 +305,34 @@ def ver_deposito(codigo):
     total = total_products()
     return render_template("fornecedores.html", deposito=dep, fornecedores=fornecedores_com_info, total_products=total)
 
+@app.route("/deposito/<codigo>/adicionar_fornecedor", methods=["POST"])
+@login_required
+def adicionar_fornecedor(codigo):
+    dep = depositos.get(codigo)
+    if not dep:
+        flash("Depósito não encontrado", "error")
+        return redirect(url_for("index"))
+    
+    novo_fornecedor = request.form.get("fornecedor", "").strip().upper()
+    
+    if not novo_fornecedor:
+        flash("Nome do fornecedor não pode ser vazio", "error")
+        return redirect(url_for("ver_deposito", codigo=codigo))
+    
+    # Verifica se já existe
+    if novo_fornecedor in dep.get("fornecedores", []):
+        flash(f"Fornecedor '{novo_fornecedor}' já existe!", "warning")
+        return redirect(url_for("ver_deposito", codigo=codigo))
+    
+    # Adiciona o novo fornecedor
+    dep.setdefault("fornecedores", []).append(novo_fornecedor)
+    
+    # Salva no JSON
+    save_data({"depositos": list(depositos.values())})
+    
+    flash(f"Fornecedor '{novo_fornecedor}' adicionado com sucesso!", "success")
+    return redirect(url_for("ver_deposito", codigo=codigo))
+
 @app.route("/deposito/<codigo>/fornecedor/<forn>")
 @login_required
 def ver_fornecedor(codigo, forn):

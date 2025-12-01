@@ -76,7 +76,7 @@
     </label><br>
     <label>Total de peças: <input type="text" name="total"></label><br>
     <label>Data (YYYY-MM-DD): <input type="text" name="data" value="{{ '' }}"></label><br>
-    <button type="submit">Adicionar</button>
+    <button type="submit" style="background: #22c55e; color: white; padding: 10px 20px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">Adicionar</button>
   </form>
 
   <h3>Mesclar outras caixas nesta</h3>
@@ -100,23 +100,20 @@
     const imagemPreview = document.getElementById('imagemPreview');
     const imagemProduto = document.getElementById('imagemProduto');
     const nomeProduto = document.getElementById('nomeProduto');
-    
-    let timeoutId;
+    const formProduto = document.getElementById('formProduto');
 
-    eanInput.addEventListener('input', function() {
-      clearTimeout(timeoutId);
-      const ean = this.value.trim();
-      
-      if (ean.length < 8) {
-        statusBusca.textContent = '';
-        imagemPreview.style.display = 'none';
-        return;
+    // APENAS busca quando pressionar Enter manualmente
+    eanInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault(); // Previne o submit do formulário
+        const ean = this.value.trim();
+        if (ean.length >= 8) {
+          buscarPorEan(ean);
+        } else {
+          statusBusca.textContent = '⚠️ EAN muito curto';
+          statusBusca.style.color = '#f59e0b';
+        }
       }
-
-      // Aguarda 500ms após parar de digitar para fazer a busca
-      timeoutId = setTimeout(() => {
-        buscarPorEan(ean);
-      }, 500);
     });
 
     function buscarPorEan(ean) {
@@ -167,9 +164,14 @@
       });
     }
 
-    // Limpa os campos quando o formulário é enviado com sucesso
-    document.getElementById('formProduto').addEventListener('submit', function(e) {
-      // Após o submit, a página recarrega, então os campos serão limpos automaticamente
+    // Valida antes de enviar o formulário
+    formProduto.addEventListener('submit', function(e) {
+      if (!materialInput.value) {
+        e.preventDefault();
+        alert('❌ Por favor, busque um produto pelo EAN antes de adicionar!');
+        eanInput.focus();
+        return false;
+      }
     });
   </script>
 {% endblock %}
