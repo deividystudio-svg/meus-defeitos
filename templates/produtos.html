@@ -22,7 +22,13 @@
             <td>{{ p.defeito }}</td>
             <td>{{ p.deposito }}</td>
             <td>{{ p.total_pecas }}</td>
-            <td>{{ p.data }}</td>
+            <td>
+              {% if p.data %}
+                {{ p.data.split('-')[2] }}/{{ p.data.split('-')[1] }}/{{ p.data.split('-')[0] }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
             <td>
               <form method="post" style="display:inline" onsubmit="return confirm('Confirma excluir esse produto?');">
                 <input type="hidden" name="action" value="delete_product">
@@ -52,13 +58,13 @@
     <input type="hidden" name="imagem" id="imagemHidden">
     
     <label>
-      <strong>EAN (Código de Barras):</strong> 
-      <input type="text" id="eanInput" placeholder="Bipe ou digite o EAN aqui" style="padding: 8px; width: 300px; font-size: 16px;">
+      <strong>Buscar por EAN ou Código Interno:</strong> 
+      <input type="text" id="eanInput" placeholder="Digite EAN ou código interno e pressione Enter" style="padding: 8px; width: 400px; font-size: 16px;">
       <span id="statusBusca" style="margin-left: 10px; font-weight: bold;"></span>
     </label>
     <br><br>
 
-    <label>Material (código interno): <input type="text" name="material" id="materialInput" readonly style="background: #f0f0f0;"></label><br>
+    <label>Material (código interno): <input type="text" name="material" id="materialInput" required style="padding: 8px;"></label><br>
     <label>Nome: <input type="text" name="nome" id="nomeInput"></label><br>
     <label>Defeito:
       <select name="defeito">
@@ -70,12 +76,13 @@
     <label>Depósito:
       <select name="deposito">
         <option value="{{ deposito.codigo }}">{{ deposito.codigo }}</option>
+        <option value="05">05</option>
         <option value="06">06</option>
         <option value="14">14</option>
       </select>
     </label><br>
-    <label>Total de peças: <input type="text" name="total"></label><br>
-    <label>Data (YYYY-MM-DD): <input type="text" name="data" value="{{ '' }}"></label><br>
+    <label>Total de peças: <input type="number" name="total" min="1" required></label><br>
+    <label>Data: <input type="date" name="data" id="dataInput" required></label><br>
     <button type="submit" style="background: #22c55e; color: white; padding: 10px 20px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">Adicionar</button>
   </form>
 
@@ -101,29 +108,34 @@
     const imagemProduto = document.getElementById('imagemProduto');
     const nomeProduto = document.getElementById('nomeProduto');
     const formProduto = document.getElementById('formProduto');
+    const dataInput = document.getElementById('dataInput');
+
+    // Define data de hoje como padrão
+    const hoje = new Date().toISOString().split('T')[0];
+    dataInput.value = hoje;
 
     // APENAS busca quando pressionar Enter manualmente
     eanInput.addEventListener('keydown', function(e) {
       if (e.key === 'Enter') {
         e.preventDefault(); // Previne o submit do formulário
-        const ean = this.value.trim();
-        if (ean.length >= 8) {
-          buscarPorEan(ean);
+        const busca = this.value.trim();
+        if (busca.length >= 3) {
+          buscarProduto(busca);
         } else {
-          statusBusca.textContent = '⚠️ EAN muito curto';
+          statusBusca.textContent = '⚠️ Digite pelo menos 3 caracteres';
           statusBusca.style.color = '#f59e0b';
         }
       }
     });
 
-    function buscarPorEan(ean) {
+    function buscarProduto(busca) {
       statusBusca.textContent = '🔍 Buscando...';
       statusBusca.style.color = '#3b82f6';
       
       const formData = new FormData();
-      formData.append('ean', ean);
+      formData.append('busca', busca);
       
-      fetch('/buscar_por_ean', {
+      fetch('/buscar_produto_geral', {
         method: 'POST',
         body: formData
       })
@@ -133,7 +145,7 @@
           statusBusca.textContent = '✅ Encontrado!';
           statusBusca.style.color = '#22c55e';
           
-          // Preenche os campos
+          // Preenche os campos (agora material é editável)
           materialInput.value = data.codigo_interno;
           nomeInput.value = data.nome;
           
@@ -153,8 +165,6 @@
         } else {
           statusBusca.textContent = '❌ ' + data.message;
           statusBusca.style.color = '#ef4444';
-          materialInput.value = '';
-          imagemPreview.style.display = 'none';
         }
       })
       .catch(err => {
@@ -163,15 +173,5 @@
         console.error(err);
       });
     }
-
-    // Valida antes de enviar o formulário
-    formProduto.addEventListener('submit', function(e) {
-      if (!materialInput.value) {
-        e.preventDefault();
-        alert('❌ Por favor, busque um produto pelo EAN antes de adicionar!');
-        eanInput.focus();
-        return false;
-      }
-    });
   </script>
 {% endblock %}

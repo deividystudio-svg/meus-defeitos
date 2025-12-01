@@ -490,33 +490,33 @@ def ver_caixa(codigo, forn, numero):
     return render_template("produtos.html", deposito=dep, fornecedor=forn, caixa=caixa, defects=defects, produtos=lista_prod, total_products=total)
 
 # ---------------------------------------------------------------------------------
-# ROTA PARA BUSCAR POR EAN
+# ROTA PARA BUSCAR POR EAN OU CÓDIGO INTERNO
 # ---------------------------------------------------------------------------------
 
-@app.route("/buscar_por_ean", methods=["POST"])
+@app.route("/buscar_produto_geral", methods=["POST"])
 @login_required
-def buscar_por_ean():
+def buscar_produto_geral():
     try:
-        ean_buscado = request.form.get("ean", "").strip()
+        busca = request.form.get("busca", "").strip()
         
-        if not ean_buscado:
-            return jsonify({"success": False, "message": "EAN vazio"})
+        if not busca:
+            return jsonify({"success": False, "message": "Busca vazia"})
         
-        # Busca pelo EAN
-        resultados = buscar_produto(ean_buscado)
+        # Busca pelo termo (pode ser EAN ou código interno)
+        resultados = buscar_produto(busca)
         
         if not resultados:
             return jsonify({"success": False, "message": "Nenhum produto encontrado"})
         
-        # Procura o produto com EAN EXATO
+        # Procura o produto com EAN EXATO ou CÓDIGO INTERNO EXATO
         produto_encontrado = None
         for prod in resultados:
-            if prod.get("ean") == ean_buscado:
+            if prod.get("ean") == busca or prod.get("codigo_interno") == busca:
                 produto_encontrado = prod
                 break
         
         if not produto_encontrado:
-            return jsonify({"success": False, "message": f"EAN {ean_buscado} não encontrado nos resultados"})
+            return jsonify({"success": False, "message": f"'{busca}' não encontrado com correspondência exata"})
         
         return jsonify({
             "success": True,
